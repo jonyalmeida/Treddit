@@ -1,0 +1,11 @@
+{
+  "name": "treddit",
+  "version": "1.0.0",
+  "description": "A Reddit clone made with Typescript, Node.js, GraphQL",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
