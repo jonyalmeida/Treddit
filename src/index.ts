@@ -9,11 +9,11 @@ const main = async () => {
     //run migrations
     await orm.getMigrator().up();
 
-    // const post = orm.em.create(Post, { title: "my first post" });
-    // await orm.em.persistAndFlush(post);
+    //create express app
+    const app = express();
+    app.get("/", (req, res) => res.send("hello world"));
 
-    // const posts = await orm.em.find(Post, {});
-    // console.log(posts);
+    app.listen(8081, () => console.log("Listening on port 8081..."));
 };
 
 main().catch((err) => console.log(err));
