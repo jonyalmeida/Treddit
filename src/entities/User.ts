@@ -17,9 +17,9 @@ export class User {
     updatedAt = new Date();
 
     @Field()
-    @Property({ unique: true })
+    @Property({ type: "string", unique: true })
     username!: string;
 
-    @Property()
+    @Property({ type: "string" })
     password!: string;
 }
