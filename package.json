@@ -13,7 +13,9 @@
     },
     "author": "",
     "license": "ISC",
-    "devDependencies": {},
+    "devDependencies": {
+        "nodemon": "^2.0.6"
+    },
     "dependencies": {
         "@mikro-orm/cli": "^4.3.4",
         "@mikro-orm/core": "^4.3.4",
