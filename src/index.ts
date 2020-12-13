@@ -18,6 +18,7 @@ const main = async () => {
     //create express app
     const app = express();
 
+    //create and configure Apollo Server
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
             resolvers: [HelloResolver, PostResolver],
