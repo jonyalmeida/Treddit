@@ -1,5 +1,7 @@
+import { Entity, PrimaryKey, Property } from "@mikro-orm/core";
+
 @Entity()
-export class Book {
+export class Post {
 
   @PrimaryKey()
   id!: number;
@@ -12,10 +14,5 @@ export class Book {
 
   @Property()
   title!: string;
-
-  constructor(title: string, author: Author) {
-    this.title = title;
-    this.author = author;
-  }
-
+  
 }

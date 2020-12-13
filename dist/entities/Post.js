@@ -8,36 +8,33 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Book = void 0;
-let Book = class Book {
-    constructor(title, author) {
+exports.Post = void 0;
+const core_1 = require("@mikro-orm/core");
+let Post = class Post {
+    constructor() {
         this.createdAt = new Date();
         this.updatedAt = new Date();
-        this.title = title;
-        this.author = author;
     }
 };
 __decorate([
-    PrimaryKey(),
+    core_1.PrimaryKey(),
     __metadata("design:type", Number)
-], Book.prototype, "id", void 0);
+], Post.prototype, "id", void 0);
 __decorate([
-    Property(),
+    core_1.Property(),
     __metadata("design:type", Object)
-], Book.prototype, "createdAt", void 0);
+], Post.prototype, "createdAt", void 0);
 __decorate([
-    Property({ onUpdate: () => new Date() }),
+    core_1.Property({ onUpdate: () => new Date() }),
     __metadata("design:type", Object)
-], Book.prototype, "updatedAt", void 0);
+], Post.prototype, "updatedAt", void 0);
 __decorate([
-    Property(),
+    core_1.Property(),
     __metadata("design:type", String)
-], Book.prototype, "title", void 0);
-Book = __decorate([
-    Entity(),
-    __metadata("design:paramtypes", [String, typeof (_a = typeof Author !== "undefined" && Author) === "function" ? _a : Object])
-], Book);
-exports.Book = Book;
+], Post.prototype, "title", void 0);
+Post = __decorate([
+    core_1.Entity()
+], Post);
+exports.Post = Post;
 //# sourceMappingURL=Post.js.map
