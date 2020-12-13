@@ -40,11 +40,22 @@ class UserResponse {
 
 @Resolver()
 export class UserResolver {
+    @Query(() => User, { nullable: true })
+    me(@Ctx() { em, req }: MyContext) {
+        //you are not logged in
+        if (!req.session.userId) {
+            return null;
+        }
+
+        const user = em.findOne(User, { id: req.session.userId });
+        return user;
+    }
+
     @Mutation(() => UserResponse)
     async register(
         @Arg("options", () => UsernamePasswordInput)
         options: UsernamePasswordInput,
-        @Ctx() { em }: MyContext
+        @Ctx() { em, req }: MyContext
     ): Promise<UserResponse> {
         if (options.username.length < 2) {
             return {
@@ -88,6 +99,12 @@ export class UserResolver {
             }
             console.error("message: ", err.message);
         }
+
+        //log in user after registration
+        //store user id session
+        //keep user logged in
+        req.session.userId = user.id;
+
         return { user };
     }
 
@@ -95,7 +112,7 @@ export class UserResolver {
     async login(
         @Arg("options", () => UsernamePasswordInput)
         options: UsernamePasswordInput,
-        @Ctx() { em }: MyContext
+        @Ctx() { em, req }: MyContext
     ): Promise<UserResponse> {
         const user = await em.findOne(User, { username: options.username });
         if (!user) {
@@ -120,6 +137,8 @@ export class UserResolver {
                 ],
             };
         }
+
+        req.session.userId = user.id;
 
         return {
             user,
