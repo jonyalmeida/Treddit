@@ -35,11 +35,11 @@ __decorate([
 ], User.prototype, "updatedAt", void 0);
 __decorate([
     type_graphql_1.Field(),
-    core_1.Property({ unique: true }),
+    core_1.Property({ type: "string", unique: true }),
     __metadata("design:type", String)
 ], User.prototype, "username", void 0);
 __decorate([
-    core_1.Property(),
+    core_1.Property({ type: "string" }),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 User = __decorate([
