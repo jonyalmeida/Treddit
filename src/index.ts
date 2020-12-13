@@ -3,6 +3,9 @@ import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import "reflect-metadata";
+import redis from "redis";
+import session from "express-session";
+import connectRedis from "connect-redis";
 
 import { __prod__ } from "./constants";
 import mikroConfig from "./mikro-orm.config";
@@ -18,6 +21,27 @@ const main = async () => {
 
     //create express app
     const app = express();
+
+    const RedisStore = connectRedis(session);
+    const redisClient = redis.createClient();
+
+    app.use(
+        session({
+            name: "qid",
+            store: new RedisStore({
+                client: redisClient,
+                disableTouch: true,
+            }),
+            cookie: {
+                maxAge: 1000 * 60 * 60 * 24 * 14,
+                httpOnly: true,
+                sameSite: "lax", //csrf
+                secure: __prod__, //cookie only works in https
+            },
+            secret: "adiodh8392dh3829hdj92hw892qh3w89dh2q893",
+            resave: false,
+        })
+    );
 
     //create and configure Apollo Server
     const apolloServer = new ApolloServer({
