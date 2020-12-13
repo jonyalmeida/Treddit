@@ -1,62 +1,40 @@
 import React from "react";
+import { Formik, Form } from "formik";
+import { FormControl, FormLabel, Input, Box, Button } from "@chakra-ui/react";
+import { Wrapper } from "../components/Wrapper";
+import InputField from "../components/InputField";
+import {
+    userRegisterMutation,
+    MeQuery,
+    MeDocument,
+} from "../generated/graphql";
 
 interface registerProps {}
 
 export const Register: React.FC<registerProps> = ({}) => {
-    function FormikExample() {
-        function validateName(value) {
-            let error;
-            if (!value) {
-                error = "Name is required";
-            } else if (value !== "Naruto") {
-                error = "Jeez! You're not a fan 😱";
-            }
-            return error;
-        }
+    const handleChange = () => {};
 
-        return (
+    return (
+        <Wrapper variant='small'>
             <Formik
-                initialValues={{ name: "Sasuke" }}
-                onSubmit={(values, actions) => {
-                    setTimeout(() => {
-                        alert(JSON.stringify(values, null, 2));
-                        actions.setSubmitting(false);
-                    }, 1000);
-                }}>
-                {(props) => (
+                onSubmit={(values) => console.log(values)}
+                initialValues={{ username: "", password: "" }}>
+                {({ values, handleChange }) => (
                     <Form>
-                        <Field name='name' validate={validateName}>
-                            {({ field, form }) => (
-                                <FormControl
-                                    isInvalid={
-                                        form.errors.name && form.touched.name
-                                    }>
-                                    <FormLabel htmlFor='name'>
-                                        First name
-                                    </FormLabel>
-                                    <Input
-                                        {...field}
-                                        id='name'
-                                        placeholder='name'
-                                    />
-                                    <FormErrorMessage>
-                                        {form.errors.name}
-                                    </FormErrorMessage>
-                                </FormControl>
-                            )}
-                        </Field>
-                        <Button
-                            mt={4}
-                            colorScheme='teal'
-                            isLoading={props.isSubmitting}
-                            type='submit'>
-                            Submit
-                        </Button>
+                        <FormControl>
+                            <FormLabel htmlFor='username'>Username</FormLabel>
+                            <Input
+                                value={values.username}
+                                onChange={handleChange}
+                                id='username'
+                                placeholder='Username'
+                            />
+                        </FormControl>
                     </Form>
                 )}
             </Formik>
-        );
-    }
+        </Wrapper>
+    );
 };
 
 export default Register;
