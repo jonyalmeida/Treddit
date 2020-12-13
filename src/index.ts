@@ -12,6 +12,7 @@ import mikroConfig from "./mikro-orm.config";
 import { HelloResolver } from "./resolvers/hello";
 import { PostResolver } from "./resolvers/post";
 import { UserResolver } from "./resolvers/user";
+import { MyContext } from "./types";
 
 const main = async () => {
     //connect to database
@@ -38,6 +39,7 @@ const main = async () => {
                 sameSite: "lax", //csrf
                 secure: __prod__, //cookie only works in https
             },
+            saveUninitialized: false,
             secret: "adiodh8392dh3829hdj92hw892qh3w89dh2q893",
             resave: false,
         })
@@ -49,7 +51,7 @@ const main = async () => {
             resolvers: [HelloResolver, PostResolver, UserResolver],
             validate: false,
         }),
-        context: () => ({ em: orm.em }),
+        context: ({ req, res }): MyContext => ({ em: orm.em, req, res }),
     });
 
     apolloServer.applyMiddleware({ app });

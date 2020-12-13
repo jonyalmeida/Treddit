@@ -43,6 +43,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
             sameSite: "lax",
             secure: constants_1.__prod__,
         },
+        saveUninitialized: false,
         secret: "adiodh8392dh3829hdj92hw892qh3w89dh2q893",
         resave: false,
     }));
@@ -51,7 +52,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
             resolvers: [hello_1.HelloResolver, post_1.PostResolver, user_1.UserResolver],
             validate: false,
         }),
-        context: () => ({ em: orm.em }),
+        context: ({ req, res }) => ({ em: orm.em, req, res }),
     });
     apolloServer.applyMiddleware({ app });
     app.listen(8081, () => console.log("Listening on port 8081..."));
