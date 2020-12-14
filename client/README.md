@@ -1,1 +1,2 @@
-# Client Side- React, Next.js, GraphQL, ChakraUI
+# Client Side- 
+### React, Next.js, GraphQL, ChakraUI
