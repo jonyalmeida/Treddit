@@ -24,7 +24,7 @@ const options: cors.CorsOptions = {
         "Accept",
         "X-Access-Token",
     ],
-    credentials: "same-origin",
+    credentials: true,
     methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
     origin: "http://localhost:3000",
     preflightContinue: false,
@@ -39,14 +39,14 @@ const main = async () => {
     //create express app
     const app = express();
 
-    // //use cors middleware
-    // app.use(cors(options));
-
-    // //enable pre-flight
-    // app.options("*", cors(options));
-
     const RedisStore = connectRedis(session);
     const redisClient = redis.createClient();
+
+    //use cors middleware
+    app.use(cors(options));
+
+    //enable pre-flight
+    app.options("*", cors(options));
 
     app.use(
         session({
@@ -79,7 +79,7 @@ const main = async () => {
     apolloServer.applyMiddleware({
         app,
         //apply apollo cors middleware
-        cors: { origin: "http://localhost:3000" },
+        cors: { origin: false },
     });
 
     app.listen(8081, () => console.log("Listening on port 8081..."));
