@@ -22,6 +22,7 @@ const Register: React.FC<registerProps> = ({}) => {
                         //if errors
                         setErrors(errorsFormat(response.data.register.errors));
                     } else if (response.data?.register.user) {
+                        console.log(response.data);
                         //if works
                         router.push("/");
                     }
