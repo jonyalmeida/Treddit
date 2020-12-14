@@ -1,35 +1,58 @@
 import React from "react";
 import { Formik, Form } from "formik";
-import { FormControl, FormLabel, Input, Box, Button } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/core";
 import { Wrapper } from "../components/Wrapper";
-import InputField from "../components/InputField";
-import {
-    userRegisterMutation,
-    MeQuery,
-    MeDocument,
-} from "../generated/graphql";
+import { InputField } from "../components/InputField";
+import { useMutation } from "urql";
 
 interface registerProps {}
 
-export const Register: React.FC<registerProps> = ({}) => {
-    const handleChange = () => {};
+const REGISTER_MUT = `
+mutation Register($username: String!, $password:String!) {
+  register(options: { username: $username, password: $password }) {
+    errors {
+      field
+      message
+    }
+    user {
+      id
+      username
+    }
+  }
+}
+`;
 
+const Register: React.FC<registerProps> = ({}) => {
+    const [, register] = useMutation(REGISTER_MUT);
     return (
         <Wrapper variant='small'>
             <Formik
-                onSubmit={(values) => console.log(values)}
-                initialValues={{ username: "", password: "" }}>
-                {({ values, handleChange }) => (
+                initialValues={{ username: "", password: "" }}
+                onSubmit={async (values) => {
+                    const response = await register(values);
+                }}>
+                {({ isSubmitting }) => (
                     <Form>
-                        <FormControl>
-                            <FormLabel htmlFor='username'>Username</FormLabel>
-                            <Input
-                                value={values.username}
-                                onChange={handleChange}
-                                id='username'
-                                placeholder='Username'
+                        <InputField
+                            name='username'
+                            placeholder='username'
+                            label='Username'
+                        />
+                        <Box mt={4}>
+                            <InputField
+                                name='password'
+                                placeholder='password'
+                                label='Password'
+                                type='password'
                             />
-                        </FormControl>
+                        </Box>
+                        <Button
+                            mt={4}
+                            type='submit'
+                            isLoading={isSubmitting}
+                            variantColor='teal'>
+                            register
+                        </Button>
                     </Form>
                 )}
             </Formik>

@@ -6,6 +6,7 @@ import "reflect-metadata";
 import redis from "redis";
 import session from "express-session";
 import connectRedis from "connect-redis";
+import cors from "cors";
 
 import { __prod__ } from "./constants";
 import mikroConfig from "./mikro-orm.config";
@@ -13,6 +14,21 @@ import { HelloResolver } from "./resolvers/hello";
 import { PostResolver } from "./resolvers/post";
 import { UserResolver } from "./resolvers/user";
 import { MyContext } from "./types";
+
+//options for cors middleware
+const options: cors.CorsOptions = {
+    allowedHeaders: [
+        "Origin",
+        "X-Requested-With",
+        "Content-Type",
+        "Accept",
+        "X-Access-Token",
+    ],
+    credentials: "same-origin",
+    methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
+    origin: "http://localhost:3000",
+    preflightContinue: false,
+};
 
 const main = async () => {
     //connect to database
@@ -22,6 +38,12 @@ const main = async () => {
 
     //create express app
     const app = express();
+
+    // //use cors middleware
+    // app.use(cors(options));
+
+    // //enable pre-flight
+    // app.options("*", cors(options));
 
     const RedisStore = connectRedis(session);
     const redisClient = redis.createClient();
@@ -54,7 +76,11 @@ const main = async () => {
         context: ({ req, res }): MyContext => ({ em: orm.em, req, res }),
     });
 
-    apolloServer.applyMiddleware({ app });
+    apolloServer.applyMiddleware({
+        app,
+        //apply apollo cors middleware
+        cors: { origin: "http://localhost:3000" },
+    });
 
     app.listen(8081, () => console.log("Listening on port 8081..."));
 };
